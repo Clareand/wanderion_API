@@ -16,10 +16,10 @@ use Illuminate\Http\Request;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::prefix('user')->group(function() {
+Route::group(['prefix' => 'user','middleware'=>'cors'], function (){
     Route::get('/test', 'UserController@connTest');
-    Route::get('/','UserController@index');
-    Route::post('/store','UserController@store');
+    Route::get('/', 'UserController@index');
+    Route::post('/store', 'UserController@store');
     Route::get('/find/{id}', 'UserController@show');
     Route::get('/cancel/{id}', 'UserController@destroy');
     Route::post('/moonPhase', 'UserController@moonPhase');

@@ -79,7 +79,7 @@ class MoonPhase
         $mangsiz = 0.5181;            // Moon's angular size at distance a from Earth
         $msmax = 384401;            // Semi-major axis of Moon's orbit in km
         $mparallax = 0.9507;        // Parallax at distance a from Earth
-        $synmonth = 29.53058868;    // Synodic month (new Moon to new Moon)
+        $synmonth = 29.530587981;    // Synodic month (new Moon to new Moon)
 
         $this->synmonth = $synmonth;
 
@@ -387,7 +387,7 @@ class MoonPhase
      *
      * @return string
      */
-    public function phase_name(): string
+    public function phase_name()
     {
         $names = [
             'New Moon',
@@ -403,48 +403,72 @@ class MoonPhase
         $moonIlum = $this->real_illumination($this->illumination);
         $moonAge = round($this->age);
         $phase = floor(($this->phase + 0.0625) * 8);
-        // echo "Moon Age ", $moonAge, "\n";
-        // echo "Ilumination ", $moonIlum, "\n";
-        // echo $phase, "\n";
         switch ($phase) {
             case 0:
                 if ($moonIlum == 0 && $moonAge == 29) {
-                    return $names[floor(($this->phase + 0.0625) * 8)];
+                    $result['name'] = $names[$phase];
+                    $result['id'] = $phase;
+                    return $result;
+                    // return $names[floor(($this->phase + 0.0625) * 8)];
                 } else {
-                    return $names[(floor(($this->phase + 0.0625) * 8)) + 1];
+                    $result['name'] = $names[$phase+1];
+                    $result['id'] = $phase+1;
+                    return $result;
+                    // return $names[(floor(($this->phase + 0.0625) * 8)) + 1];
                 }
                 break;
             case 2:
-                if ((in_array($moonIlum, range(40, 55))) && $moonAge == 7) {
-                    return $names[floor(($this->phase + 0.0625) * 8)];
+                if ((in_array(intval($moonIlum), range(40, 55))) && $moonAge == 7) {
+                    $result['name'] = $names[$phase];
+                    $result['id'] = $phase;
+                    return $result;
+                    // return $names[floor(($this->phase + 0.0625) * 8)];
                 } else if ($moonIlum < 55 && $moonAge < 7) {
-                    return $names[(floor(($this->phase + 0.0625) * 8)) - 1];
+                    $result['name'] = $names[$phase-1];
+                    $result['id'] = $phase-1;
+                    return $result;
+                    // return $names[(floor(($this->phase + 0.0625) * 8)) - 1];
                 } else {
-                    return $names[(floor(($this->phase + 0.0625) * 8)) + 1];
+                    $result['name'] = $names[$phase+1];
+                    $result['id'] = $phase+1;
+                    return $result;
+                    // return $names[(floor(($this->phase + 0.0625) * 8)) + 1];
                 }
                 break;
             case 4:
-                echo "im ";
-                if ($moonIlum == 100 && $moonAge == 15) {
-                    echo 'a ';
-                    return $names[$phase];
+                if ($moonIlum == 100) {
+                    $result['name'] = $names[$phase];
+                    $result['id'] = $phase;
+                    return $result;
                 } else if ($moonAge > 15) {
-                    echo 'ofc ';
-                    return $names[$phase + 1];
+                    $result['name'] = $names[$phase+1];
+                    $result['id'] = $phase+1;
+                    return $result;
                 } else {
-                    return $names[$phase - 1];
+                    $result['name'] = $names[$phase-1];
+                    $result['id'] = $phase-1;
+                    return $result;
                 }
                 break;
             case 6:
-                if ($moonAge == 22 && $moonIlum === 57) {
-                    return $names[$phase];
+                if ($moonAge == 22 && (in_array(intval($moonIlum), range(50, 59)))|| in_array(intval($moonIlum), range(50, 59))) {
+                    $result['name']= $names[$phase];
+                    $result['id']=$phase;
+                    return $result;
                 } else if ($moonAge > 22) {
-                    return $names[$phase + 1];
+                    $result['name'] = $names[$phase+1];
+                    $result['id'] = $phase+1;
+                    return $result;
                 } else {
-                    return $names[$phase - 1];
+                    $result['name'] = $names[$phase-1];
+                    $result['id'] = $phase-1;
+                    return $result;
                 }
             default:
-                return $names[floor(($this->phase + 0.0625) * 8)];
+                $result['name'] = $names[$phase];
+                $result['id'] = $phase;
+                return $result;
+                // return $names[floor(($this->phase + 0.0625) * 8)];
         }
     }
     public function real_illumination($illumination)
@@ -452,4 +476,5 @@ class MoonPhase
         $real_ilum = (round($illumination, 2));
         return $real_ilum * 100;
     }
+    // u ganti angka synmonth
 }

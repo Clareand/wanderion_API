@@ -76,8 +76,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('orders')->where('order_code',$id)->where('active',1)->first();
-        return response(MyHelper::checkGet($user));
+        $user = User::with('orders')->where('order_code',$id)->where('active',1)->get();
+        return response()->json(MyHelper::checkGet($user));
     }
 
     /**
@@ -120,10 +120,10 @@ class UserController extends Controller
 
     public function moonPhase(Request $request)
     {
-        $tmp= strtotime(Carbon::parse($request['date'])->format('time'));
-        $julian = unixtojd($tmp);
         
-        $moon = new MoonPhase($julian);
+        $tmp = strtotime($request['date']);
+        $tmp=$tmp-7200;
+        $moon = new MoonPhase($tmp);
         $result['phase'] = $moon->phase_name();
         $result['age'] = $moon->get('age');
         return response()->json(MyHelper::checkGet($result));

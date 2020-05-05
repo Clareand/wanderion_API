@@ -31,8 +31,8 @@ class MyHelper{
 
     public static function checkGet($data)
     {
-        if($data && !empty($data))return['status'=>'success','result'=>$data];
-        else if(empty($data))return['status'=>'fail','result'=>['Data not Found']];
+        if($data && !empty($data) && count($data) > 0)return['status'=>'success','result'=>$data];
+        else if(empty($data)|| count($data) == 0)return['status'=>'fail','result'=>['Data not Found']];
         else return ['status'=>'fail','result'=>['Failed to show data']];
     }
 
