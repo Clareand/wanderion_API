@@ -58,7 +58,8 @@ class Order extends Model
 		'time_format',
 		'design',
 		'moon',
-		'galaxy'
+		'galaxy',
+		'price'
 	];
 
 	public function user()

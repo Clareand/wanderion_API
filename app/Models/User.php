@@ -51,7 +51,7 @@ class User extends Model
 		'postal_code',
 		'id_city',
 		'order_code',
-		'active'
+		'active',
 	];
 
 	public function city()

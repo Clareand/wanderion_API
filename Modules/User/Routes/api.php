@@ -24,3 +24,4 @@ Route::group(['prefix' => 'user','middleware'=>'cors'], function (){
     Route::get('/cancel/{id}', 'UserController@destroy');
     Route::post('/moonPhase', 'UserController@moonPhase');
 });
+Route::get('/city', 'UserController@getCity');

@@ -44,7 +44,6 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        
         DB::beginTransaction();
         try {
             $post=$request->only(['name','phone','email','address','id_city','postal_code']);
@@ -76,8 +75,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('orders')->where('order_code',$id)->where('active',1)->get();
-        return response()->json(MyHelper::checkGet($user));
+        $order = Order::with(['user'=>function($q){
+            $q->where('user.active',1);
+        }])->where('order_code',$id)->get();
+       
+        return response()->json(MyHelper::checkGet($order));
     }
 
     /**
@@ -126,6 +128,11 @@ class UserController extends Controller
         $moon = new MoonPhase($tmp);
         $result['phase'] = $moon->phase_name();
         $result['age'] = $moon->get('age');
+        return response()->json(MyHelper::checkGet($result));
+    }
+
+    public function getCity(){
+        $result = City::all();
         return response()->json(MyHelper::checkGet($result));
     }
 

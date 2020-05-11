@@ -23,8 +23,7 @@ class UserRequest extends FormRequest
             'id_city' => 'nullable',
             'postal_code' => 'nullable',
             'coordinate' => 'required',
-            'date' => 'required|date',
-            'time' => 'required', //cari time val di laravel
+            'date' => 'required',
             'design' => 'required'
         ];
     }
