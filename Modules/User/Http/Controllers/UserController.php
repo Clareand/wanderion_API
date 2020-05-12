@@ -12,9 +12,10 @@ use DB;
 use Carbon\Carbon;
 use App\Models\City;
 use App\Models\Order;
+use Dotenv\Result\Success;
 use Symfony\Component\Console\Helper\Helper;
 use Modules\User\Http\Requests\UserRequest;
-use Modules\User\Http\Requests\OrderRequest;
+use PDF;
 
 class UserController extends Controller
 {
@@ -78,8 +79,17 @@ class UserController extends Controller
         $order = Order::with(['user'=>function($q){
             $q->where('user.active',1);
         }])->where('order_code',$id)->get();
+
+        if(sizeof($order)==0){
+            return ['status' => 'fail', 'result' => ['Failed to show data']];
+        }
+        if($order[0]['user']!=null){
+            return response()->json(MyHelper::checkGet($order));
+        }else{
+            return ['status' => 'fail', 'result' => ['Failed to show data']];
+        }
        
-        return response()->json(MyHelper::checkGet($order));
+        
     }
 
     /**
@@ -181,6 +191,15 @@ class UserController extends Controller
         };
           
         return $graph;
+    }
+
+    public function render($code){
+        $user = User::where('order_code',$code)->with('orders','city')->where('active',1)->first();
+        $tmp = Carbon::parse($user['orders'][0]['date'])->format('jS \o\f F, Y g:i:s a');
+        $user['dates'] = $tmp;
+        $pdf = PDF::loadView('user::renderPDF', $user);
+        return $pdf->download('Order Detail.pdf');
+        // return view('user::renderPDF',$user);
     }
 
 }
