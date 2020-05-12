@@ -98,9 +98,30 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $code)
     {
-        // return $request;
+        DB::beginTransaction();
+        try{
+            $post1 = $request->only(['name', 'phone', 'email', 'address', 'id_city', 'postal_code']);
+            $update1 = User::where('order_code', $code)->update($post1);
+            if($update1){
+                $post2 = $request->except(['name', 'phone', 'email', 'address', 'id_city', 'postal_code','active','deleted_at','created_at','id_user','id','order_code']);
+                $update2 = Order::where('order_code', $code)->update($post2);
+            }
+            if($update2){
+                DB::commit();
+                return response()->json(MyHelper::checkUpdate($update2));
+            }
+        } catch (\Exception $e){
+            // return $e;
+            DB::rollback();
+            $result = [
+                'status'    => 'fail',
+                'messages'    => ['Something went wrong']
+            ];
+            return response()->json($result);
+        }
+        
     }
 
     /**
@@ -136,5 +157,30 @@ class UserController extends Controller
         return response()->json(MyHelper::checkGet($result));
     }
 
+    public function bestSeller(){
+        $graphs[0] = Order::select(DB::raw('
+        (select count(Case When order.design = 0 Then 1 Else Null End)) as amount
+        '))->get();
+        $graphs[1] = Order::select(DB::raw('
+        (select count(Case When order.design = 1 Then 1 Else Null End)) as amount
+        '))->get();
+        $graphs[2] = Order::select(DB::raw('
+        (select count(Case When order.design = 2 Then 1 Else Null End)) as amount
+        '))->get();
+        for($i=0;$i<=sizeof($graphs);$i++){
+            if($i==0){
+                $graph[0]['design']='All Black';
+                $graph[0]['amount'] = $graphs[0][0]['amount'];
+            }else if($i==1){
+                $graph[1]['design'] = 'Black on White';
+                $graph[1]['amount'] = $graphs[1][0]['amount'];
+            }else{
+                $graph[2]['design'] = ' White on Black';
+                $graph[2]['amount'] = $graphs[2][0]['amount'];
+            }
+        };
+          
+        return $graph;
+    }
 
 }

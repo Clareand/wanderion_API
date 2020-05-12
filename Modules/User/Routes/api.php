@@ -22,6 +22,8 @@ Route::group(['prefix' => 'user','middleware'=>'cors'], function (){
     Route::post('/store', 'UserController@store');
     Route::get('/find/{id}', 'UserController@show');
     Route::get('/cancel/{id}', 'UserController@destroy');
+    Route::get('/best', 'UserController@bestSeller');
     Route::post('/moonPhase', 'UserController@moonPhase');
+    Route::post('/update/{code}', 'UserController@update');
 });
 Route::get('/city', 'UserController@getCity');

@@ -38,7 +38,7 @@ class MyHelper{
 
     public static function checkUpdate($data)
     {
-        if($data) return ['status' => 'success'];
+        if($data) return ['status' => 'success', 'result' => $data];
         else return ['status' => 'fail', 'result' => ['Failed to update data']];
     }
 
