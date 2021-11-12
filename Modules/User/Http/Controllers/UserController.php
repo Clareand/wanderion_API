@@ -130,5 +130,10 @@ class UserController extends Controller
         return response()->json(MyHelper::checkGet($result));
     }
 
+    public function getCity(){
+        $data = City::all();
+        return response()->json(MyHelper::checkGet($data));
+    }
+
 
 }

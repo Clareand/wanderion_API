@@ -16,9 +16,8 @@ class CreateCitiesTable extends Migration {
 		{
 			$table->bigInteger('id_city', true)->unsigned();
 			$table->integer('id_province')->unsigned()->index('fk_cities_provinces');
-			$table->string('city_name', 200);
-			$table->string('city_type', 200);
-			$table->char('city_postal_code', 5);
+			$table->string('name', 200);
+			$table->timestamps();
 		});
 	}
 

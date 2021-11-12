@@ -24,3 +24,4 @@ Route::prefix('user')->group(function() {
     Route::get('/cancel/{id}', 'UserController@destroy');
     Route::post('/moonPhase', 'UserController@moonPhase');
 });
+Route::get('/city', 'UserController@getCity');
