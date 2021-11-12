@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $postal_code
  * @property int $id_city
  * @property string $order_code
- * @property int $active
+ * @property bool $active
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property string $deleted_at
@@ -40,7 +40,7 @@ class User extends Model
 
 	protected $casts = [
 		'id_city' => 'int',
-		'active' => 'int'
+		'active' => 'bool'
 	];
 
 	protected $fillable = [

@@ -60,6 +60,7 @@ class UserController extends Controller
                 return response()->json(MyHelper::checkCreate($save2));
             }
         } catch (\Exception $e) {
+            return $e->getMessage();
             DB::rollback();
             $result = [
                 'status'    => 'fail',

@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id_city
  * @property int $id_province
  * @property string $city_name
- * @property string $city_type
- * @property string $city_postal_code
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * 
  * @property Province $province
  * @property Collection|User[] $users
@@ -27,7 +28,6 @@ class City extends Model
 {
 	protected $table = 'cities';
 	protected $primaryKey = 'id_city';
-	public $timestamps = false;
 
 	protected $casts = [
 		'id_province' => 'int'
@@ -35,9 +35,7 @@ class City extends Model
 
 	protected $fillable = [
 		'id_province',
-		'city_name',
-		'city_type',
-		'city_postal_code'
+		'city_name'
 	];
 
 	public function province()
